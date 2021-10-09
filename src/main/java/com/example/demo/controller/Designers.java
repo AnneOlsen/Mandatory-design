@@ -33,11 +33,32 @@ public class Designers {
         return designers.save(newDesigner);
     }
 
-    // Updates a designer with a specific id
+    // Updates everything in a designer with a specific id
     @PutMapping("/designers/{id}")
-    public Designer updateDesignerById(@PathVariable Long id, @RequestBody Designer updatedDesigner){
-        return designers.save(updatedDesigner);
+    public String updateDesignerById(@PathVariable Long id, @RequestBody Designer designerToUpdateWith){
+        if(designers.existsById(id)){
+           designerToUpdateWith.setId(id);
+           designers.save(designerToUpdateWith);
+           return "Designer updated";
+        }else{
+            return "Designer not found";
+        }
+    }
 
+
+    @PatchMapping("/designers/{id}")
+    public String patchDesignerById(@PathVariable Long id, @RequestBody Designer designerToUpdateWith){
+        return designers.findById(id).map( foundDesigner -> {
+            if(designerToUpdateWith.getFirstName() !=null) foundDesigner.setFirstName(designerToUpdateWith.getFirstName());
+            if(designerToUpdateWith.getSirName() !=null) foundDesigner.setSirName(designerToUpdateWith.getSirName());
+            if(designerToUpdateWith.getBirthYear() !=0) foundDesigner.setBirthYear(designerToUpdateWith.getBirthYear());
+            if(designerToUpdateWith.getNationality() !=null) foundDesigner.setNationality(designerToUpdateWith.getNationality());
+            if(designerToUpdateWith.getGender() !=null) foundDesigner.setGender(designerToUpdateWith.getGender());
+
+            designers.save(foundDesigner);
+            System.out.println(foundDesigner);
+            return "Designer updated";
+        }) .orElse("Not found");
     }
 
     // Deletes a designer with a specific id
