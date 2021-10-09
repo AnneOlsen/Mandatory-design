@@ -25,7 +25,7 @@ public class SwaggerConfig {
 
     public ApiInfo apiInfo(){
         return new ApiInfoBuilder()
-                .title("Designer API Documentation 😎")
+                .title("Designer API Documentation")
                 .build();
     }
 }
