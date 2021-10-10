@@ -24,7 +24,7 @@ public class Designers {
     // Getting a designer with the specific id
     @GetMapping("/designers/{id}")
     public Designer getDesignerById(@PathVariable Long id){
-        return (Designer) designers.findAllById(Collections.singleton(id));
+        return designers.findById(id).get();
     }
 
     // Adds a new designer
@@ -63,9 +63,9 @@ public class Designers {
 
     // Deletes a designer with a specific id
     @DeleteMapping("/designers/{id}")
-    public void deleteDesignerById(@PathVariable Long id){
+    public String deleteDesignerById(@PathVariable Long id){
         designers.deleteById(id);
-        System.out.println("The designer has been deleted succesfully");
+       return"The designer has been deleted succesfully";
     }
 
 
